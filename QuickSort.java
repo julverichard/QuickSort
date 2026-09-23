@@ -10,65 +10,94 @@ package Sort;
  */
 public class QuickSort {
 
-    // Partition function
+    static void displayArray(int[] arr) {
+        for (int number : arr) {
+            System.out.print(number + " ");
+        }
+        System.out.println();
+    }
+
     static int partition(int[] arr, int left, int right) {
 
         int pivot = arr[right];
 
-        int leftPointer = left;
-        int rightPointer = right - 1;
+        System.out.println("\nPivot: " + pivot);
 
-        while (true) {
+        int i = left - 1;
 
-            // Move left pointer while value is less than pivot
-            while (leftPointer <= rightPointer && arr[leftPointer] < pivot) {
-                leftPointer++;
-            }
+        for (int j = left; j < right; j++) {    
 
-            // Move right pointer while value is greater than pivot
-            while (rightPointer >= leftPointer && arr[rightPointer] > pivot) {
-                rightPointer--;
-            }
+            System.out.println("Comparing " + arr[j] + " and " + pivot + "..");
 
-            // If pointers meet or cross
-            if (leftPointer >= rightPointer) {
-                break;
-            } else {
-                // Swap values
-                int temp = arr[leftPointer];
-                arr[leftPointer] = arr[rightPointer];
-                arr[rightPointer] = temp;
+            if (arr[j] < pivot) {
+
+                i++;
+
+                // Swap
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+
+                System.out.println("Moving " + arr[i] + " to the left");
+
+                System.out.print("Current List: ");
+                displayArray(arr);
             }
         }
 
-        // Swap pivot with left pointer
-        int temp = arr[leftPointer];
-        arr[leftPointer] = arr[right];
+        // Put pivot in its correct position
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[right];
         arr[right] = temp;
 
-        return leftPointer;
+        int pivotIndex = i + 1;
+
+        System.out.println(pivot + " inserted at index: " + pivotIndex);
+
+        System.out.print("Sub-Sorted List: ");
+        displayArray(arr);
+
+        return pivotIndex;
     }
 
-    // Quick Sort function
+    // Quick Sort method
     static void quickSort(int[] arr, int left, int right) {
 
-        // Base condition
-        if (right - left <= 0) {
-            return;
+        if (left < right) {
+
+            int pivotIndex = partition(arr, left, right);
+
+            // Sort left side
+            quickSort(arr, left, pivotIndex - 1);
+
+            // Sort right side
+            quickSort(arr, pivotIndex + 1, right);
         }
-
-        // Partition the array
-        int pivotIndex = partition(arr, left, right);
-
-        // Quick sort left partition
-        quickSort(arr, left, pivotIndex - 1);
-
-        // Quick sort right partition
-        quickSort(arr, pivotIndex + 1, right);
     }
 
     // Main method
-    
+    public static void main(String[] args) {
+
+        int[] arr = {40, -10, 30, 50, -20, -60, 15};
+
+        System.out.println("Original List:");
+        displayArray(arr);
+
+        System.out.println("\n==============================");
+        System.out.println("       QUICK SORT PROCESS");
+        System.out.println("==============================");
+
+        // Start Quick Sort
+        quickSort(arr, 0, arr.length - 1);
+
+        System.out.println("\nSorted Num");
+        displayArray(arr);
+
+        System.out.println("\n==============================");
+        System.out.println("       SORTING COMPLETE");
+        System.out.println("==============================");
     }
+}
+
 
 
